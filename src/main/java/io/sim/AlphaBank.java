@@ -1,48 +1,94 @@
 package io.sim;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class AlphaBank extends Thread {
     private double companyBalance;
     private double fuelStationBalance;
-    private Map<Driver, Double> accountBalances;
+    private Map<Driver, Double> driverBalances;
+    private Lock lock;
 
     public AlphaBank() {
-        // Inicialize os saldos iniciais para a empresa e a estação de abastecimento
-        companyBalance = 0.0;
-        fuelStationBalance = 0.0;
-        this.accountBalances = new HashMap<>();
+        this.companyBalance = 0.0;
+        this.fuelStationBalance = 0.0;
+        this.driverBalances = new HashMap<>();
+        this.lock = new ReentrantLock();
     }
 
-    // Métodos para realizar transações financeiras
-
     public synchronized void depositToCompany(double amount) {
-        companyBalance += amount;
+        lock.lock();
+        try {
+            companyBalance += amount;
+        } finally {
+            lock.unlock();
+        }
     }
 
     public synchronized void depositToFuelStation(double amount) {
-        fuelStationBalance += amount;
+        lock.lock();
+        try {
+            fuelStationBalance += amount;
+        } finally {
+            lock.unlock();
+        }
     }
 
     public synchronized double getCompanyBalance() {
-        return companyBalance;
+        lock.lock();
+        try {
+            return companyBalance;
+        } finally {
+            lock.unlock();
+        }
     }
 
     public synchronized double getFuelStationBalance() {
-        return fuelStationBalance;
+        lock.lock();
+        try {
+            return fuelStationBalance;
+        } finally {
+            lock.unlock();
+        }
     }
 
     public synchronized boolean checkBalance(Driver driver, double amount) {
-        if (accountBalances.containsKey(driver)) {
-            double balance = accountBalances.get(driver);
-            return balance >= amount;
+        lock.lock();
+        try {
+            if (driverBalances.containsKey(driver)) {
+                double balance = driverBalances.get(driver);
+                return balance >= amount;
+            }
+            return false; // O motorista não possui uma conta no banco ou não tem saldo suficiente
+        } finally {
+            lock.unlock();
         }
-        return false; // O motorista não possui uma conta no banco ou não tem saldo suficiente
     }
 
     public synchronized void makePayment(Driver driver, double amount) {
-        // Implemente a lógica para fazer o pagamento
+        lock.lock();
+        try {
+            if (driverBalances.containsKey(driver)) {
+                double balance = driverBalances.get(driver);
+                if (balance >= amount) {
+                    balance -= amount;
+                    driverBalances.put(driver, balance);
+                }
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public synchronized void createAccount(Driver driver, double initialBalance) {
+        lock.lock();
+        try {
+            driverBalances.put(driver, initialBalance);
+        } finally {
+            lock.unlock();
+        }
     }
 
     @Override
