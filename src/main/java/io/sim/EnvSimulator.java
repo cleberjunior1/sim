@@ -11,6 +11,7 @@ public class EnvSimulator extends Thread {
 
     public EnvSimulator(Company company) {
         this.company = company;
+
     }
 
     @Override
@@ -33,10 +34,20 @@ public class EnvSimulator extends Thread {
 
             if (i1.isOn()) {
                 int numCars = 100; // Defina o número de carros que deseja criar
+                int fuelType = 2; // 2 representa gasolina
+                int fuelPreferential = 1; // 1 representa preferência por algum tipo de combustível
+                double fuelPrice = 3.40; // Defina o preço do combustível conforme necessário
+
+
+                SumoColor green = new SumoColor(0, 255, 0, 126);
+
 
                 for (int i = 1; i <= numCars; i++) {
                     String carId = "CAR" + i;
-                    Auto auto = new Auto(true, carId, green, "D1", sumo, 500, fuelType, fuelPreferential, fuelPrice, personCapacity, personNumber);
+                    
+
+
+                    Auto auto = new Auto(true, carId, green, "D1", sumo, 500, fuelType, fuelPreferential, fuelPrice, 1, 1);
                     company.addCar(auto); // Adicione o carro à lista de carros da Company
                     TransportService tS1 = new TransportService(true, carId, i1, auto, sumo);
                     tS1.start();

@@ -1,29 +1,37 @@
 package io.sim;
 
+/**
+ * The App class is the main entry point for the simulation application.
+ */
 public class App {
+
+    /**
+     * The main method initializes the simulation environment and starts the simulation.
+     * @param args command line arguments (not used)
+     */
     public static void main(String[] args) {
         
         AlphaBank alphaBank = new AlphaBank();
-        double initialFuelStock = 1000.0; // Defina o estoque inicial de combustível desejado
+        double initialFuelStock = 1000.0; 
 
-        FuelStation fuelStation = new FuelStation(alphaBank, 2, 5.87, initialFuelStock); // 2 bombas, preço do combustível e estoque inicial
+        FuelStation fuelStation = new FuelStation(alphaBank, 2, 5.87, initialFuelStock); 
 
         Company company = new Company();
 
         EnvSimulator envSimulator = new EnvSimulator(company);
 
-        // Inicie a FuelStation em uma thread separada
+      
         fuelStation.start();
 
-        // Inicie a simulação da empresa
+        
         company.start();
 
-        // Inicie a simulação do AlphaBank
+        
         alphaBank.start();
 
         envSimulator.start();
 
-        // Aguarde a conclusão da simulação
+       
         try {
             company.join();
             fuelStation.join();
@@ -31,6 +39,6 @@ public class App {
             e.printStackTrace();
         }
 
-        // Realize qualquer limpeza ou relatórios finais, se necessário
+        
     }
 }
