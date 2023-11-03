@@ -20,15 +20,9 @@ public class App {
         // Lembrando que devo inciar com start() e não com run()
         // DIferença entre start() e run() é que start() inicia uma nova thread e run() não
         fuelStation.start();        
-        company.start();        
+        company.run();        
         alphaBank.start();
        
-        try { // espera a execução das threads
-            company.join(); // espera a execução da thread company
-        } catch (InterruptedException e) {
-            e.printStackTrace(); // imprime o erro
-        }
-
-        
+       
     }
 }
