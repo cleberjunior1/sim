@@ -1,42 +1,32 @@
 package io.sim;
 
 /**
- * The App class is the main entry point for the simulation application.
+ * A classe App é o método main que inicializa as classes principais do projeto.
  */
 public class App {
 
     /**
-     * The main method initializes the simulation environment and starts the simulation.
-     * @param args command line arguments (not used)
+     * Inicialização das classes principais do projeto.
      */
     public static void main(String[] args) {
         
-        AlphaBank alphaBank = new AlphaBank();
-        double initialFuelStock = 1000.0; 
-
-        FuelStation fuelStation = new FuelStation(alphaBank, 2, 5.87, initialFuelStock); 
-
-        Company company = new Company();
-
-        EnvSimulator envSimulator = new EnvSimulator(company);
-
-      
-        fuelStation.start();
-
+        EnvSimulator envSimulator = new EnvSimulator(); // responsável por fazer a comunicação com sumo e iniciar a simulação, as rotas e os drivers
+        AlphaBank alphaBank = new AlphaBank(); // gerencia toda a parte de pagamento
+        FuelStation fuelStation = new FuelStation(); // representa o posto de combustível
+        Company company = new Company(envSimulator); // representa a companhia (mobility company) 
         
-        company.start();
 
-        
+        // Inicialização das threads
+        // Lembrando que devo inciar com start() e não com run()
+        // DIferença entre start() e run() é que start() inicia uma nova thread e run() não
+        fuelStation.start();        
+        company.start();        
         alphaBank.start();
-
-        envSimulator.start();
-
        
-        try {
-            company.join();
-            fuelStation.join();
+        try { // espera a execução das threads
+            company.join(); // espera a execução da thread company
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // imprime o erro
         }
 
         
