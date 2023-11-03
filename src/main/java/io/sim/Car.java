@@ -2,90 +2,88 @@ package io.sim;
 
 import de.tudresden.sumo.cmd.Vehicle;
 import de.tudresden.sumo.objects.SumoColor;
+import it.polito.appeal.traci.SumoTraciConnection;
 
-/**
- * Classe que representa um carro, que é um tipo de veículo.
- * Possui um tanque de combustível com capacidade fixa e um motorista.
- * Pode ser conduzido por uma certa distância, consumindo combustível.
- * Se o combustível acabar, precisa ser abastecido em um posto de combustível.
- */
-public class Car extends Vehicle {
-    // Capacidade fixa de combustível em litros
-    private final double FUEL_CAPACITY = 10.0;
-    // Tanque de combustível em litros
-    private double fuelTank;
-    // Motorista do carro
-    private Driver driver;
-    // Posto de combustível onde o carro pode abastecer
-    private FuelStation fuelStation;
+public class Car extends Vehicle implements Runnable {
+    // Deve ser cliente de Company
+    // Sumo deve retornar a quantidade de litros gastos e o valor de Fuel Tank deve
+    // ser alterado
+    private double FuelTank;
+    private boolean isAlive = false;
+    private boolean abastecer;
 
-    /**
-     * Construtor da classe Car.
-     * Inicializa o tanque com a capacidade máxima do veículo.
-     * @param driver o motorista do carro
-     * @param fuelStation o posto de combustível onde o carro pode abastecer
-     */
-    public Car(Driver driver, FuelStation fuelStation) {
-        this.fuelTank = FUEL_CAPACITY;
-        this.driver = driver;
-        this.fuelStation = fuelStation;
+    private String idCarro;
+    private Auto auto;
+    private SumoTraciConnection sumo;
+
+    public Car(String idDriver, SumoTraciConnection sumo) {
+        this.isAlive = true;
+        this.FuelTank = 10;
+        this.abastecer = false;
+        this.idCarro = "Carro_" + idDriver;
+        this.sumo = sumo;
+        int fuelType = 2;
+        int fuelPreferential = 2;
+        double fuelPrice = 5.87;
+        int personCapacity = 1;
+        int personNumber = 1;
+        SumoColor green = new SumoColor(0, 255, 0, 126);
+        try {
+            this.auto = new Auto(true, idCarro, green, idDriver, this.sumo, 500, fuelType, fuelPreferential, fuelPrice,
+                    personCapacity, personNumber);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        run();
     }
 
-    /**
-     * Método que simula a condução do carro por uma certa distância.
-     * Deduz o combustível com base na distância percorrida.
-     * Se o combustível acabar, o carro precisa abastecer no posto de combustível.
-     * @param distance a distância a ser percorrida em km
-     */
-    public void drive(double distance) {
-        double fuelConsumptionRate = 0.1; // Taxa de consumo em litros por km (exemplo)
-        double fuelConsumed = distance * fuelConsumptionRate;
-
-        synchronized (this) {
-            if (fuelTank >= fuelConsumed) {
-                fuelTank -= fuelConsumed;
-            } else {
-                fuelConsumed = fuelTank;
-                fuelTank = 0;
-                fuelStation.refuelCar(this, fuelConsumed);
+    public void run() {
+        // Processos iniciais...
+        while (isAlive) {
+            try {
+                if (FuelTank <= 3) { // Verificando a quantidade de combustível
+                    abastecer = true; // Precisa abastecer
+                }
+                // System.out.println("Thread botpayment");
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                // TODO: handle exception
             }
         }
     }
 
-    /**
-     * Método que adiciona combustível ao tanque do carro.
-     * Garante que o tanque não ultrapasse a capacidade máxima do veículo.
-     * @param liters a quantidade de litros de combustível a ser adicionada
-     */
-    public synchronized void refuel(double liters) {
-        fuelTank += liters;
-        if (fuelTank > FUEL_CAPACITY) {
-            fuelTank = FUEL_CAPACITY;
-        }
+    public void atualizaCombustivel(double km, double consumo) {
+        double litrosConsumidos = km * consumo;
+        this.FuelTank -= litrosConsumidos;
     }
 
-    /**
-     * Getter para o tanque de combustível do carro.
-     * @return o tanque de combustível em litros
-     */
+    public void infoTanqueAbastecido(double gasolina) {
+        this.FuelTank = gasolina;
+        this.abastecer = false;
+    }
+
     public double getFuelTank() {
-        return fuelTank;
+        return FuelTank;
     }
 
-    /**
-     * Getter para o motorista do carro.
-     * @return o motorista do carro
-     */
-    public Driver getDriver() {
-        return driver;
+    public boolean getAbastecer() {
+        return abastecer; // Sinal de que o carro foi abastecido
     }
 
-    /**
-     * Setter para o posto de combustível do carro.
-     * @param fuelStation o novo posto de combustível do carro
-     */
-    public void setFuelStation(FuelStation fuelStation) {
-        this.fuelStation = fuelStation;
+    public void adicinaGasolina(double gasolina) {
+        this.FuelTank += gasolina;
+    }
+
+    public void paraCarro() {
+
+    }
+
+    public void liberaCarro() {
+
+    }
+
+    public Auto getAuto() {
+        return this.auto;
     }
 }
-

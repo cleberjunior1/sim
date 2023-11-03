@@ -1,64 +1,51 @@
 package io.sim;
 
-import com.google.gson.Gson;
-
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.KeyGenerator;
-import java.security.Key;
+import org.jasypt.util.text.BasicTextEncryptor;
 
 public class JSONCryptoUtil {
-    private SecretKey secretKey;
-    private Gson gson;
+    // Classe para criptografar e desencriptografar dados de mensagens trocadas
+    // entre as classes
+    private String cifra = "chave_secreta";
 
-    public JSONCryptoUtil() {
-        // Inicialize a chave de criptografia (pode ser mais seguro armazená-la em um local seguro)
-        try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            keyGenerator.init(128);
-            secretKey = keyGenerator.generateKey();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        gson = new Gson();
+    public String criptografarString(String dados) {
+        BasicTextEncryptor texto = new BasicTextEncryptor();
+        texto.setPasswordCharArray(cifra.toCharArray());
+        String dadoCriptografado = texto.encrypt(dados);
+        return dadoCriptografado;
     }
 
-    public String encryptToJSON(Object data) {
-        try {
-            // Serializa o objeto Java em JSON
-            String jsonData = gson.toJson(data);
-
-            // Criptografa os dados
-            Cipher cipher = Cipher.getInstance("AES");
-            Key key = secretKey;
-            cipher.init(Cipher.ENCRYPT_MODE, key);
-            byte[] encryptedData = cipher.doFinal(jsonData.getBytes());
-
-            // Retorna os dados criptografados em formato JSON
-            return new String(encryptedData);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public String criptografarDouble(double dados) {
+        BasicTextEncryptor texto = new BasicTextEncryptor();
+        texto.setPasswordCharArray(cifra.toCharArray());
+        String dadoCriptografado = texto.encrypt(Double.toString(dados));
+        return dadoCriptografado;
     }
 
-    public <T> T decryptFromJSON(String encryptedJSON, Class<T> dataType) {
-        try {
-            // Descriptografa os dados
-            Cipher cipher = Cipher.getInstance("AES");
-            Key key = secretKey;
-            cipher.init(Cipher.DECRYPT_MODE, key);
-            byte[] decryptedData = cipher.doFinal(encryptedJSON.getBytes());
+    public String criptografarTimestamp(Long dados) {
+        BasicTextEncryptor texto = new BasicTextEncryptor();
+        texto.setPasswordCharArray(cifra.toCharArray());
+        String dadoCriptografado = texto.encrypt(dados.toString());
+        return dadoCriptografado;
+    }
 
-            // Desserializa o JSON em um objeto Java
-            String decryptedJSON = new String(decryptedData);
-            return gson.fromJson(decryptedJSON, dataType);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public String descriptografarString(String dados) {
+        BasicTextEncryptor texto = new BasicTextEncryptor();
+        texto.setPasswordCharArray(cifra.toCharArray());
+        String dadoDescriptografado = texto.decrypt(dados);
+        return dadoDescriptografado;
+    }
+
+    public double descriptografarDouble(String dados) {
+        BasicTextEncryptor texto = new BasicTextEncryptor();
+        texto.setPasswordCharArray(cifra.toCharArray());
+        String dadoDescriptografado = texto.decrypt(dados);
+        return Double.parseDouble(dadoDescriptografado);
+    }
+
+    public Long descriptografarTimestamp(String dados) {
+        BasicTextEncryptor texto = new BasicTextEncryptor();
+        texto.setPasswordCharArray(cifra.toCharArray());
+        String dadoDescriptografado = texto.decrypt(dados);
+        return Long.parseLong(dadoDescriptografado);
     }
 }
-

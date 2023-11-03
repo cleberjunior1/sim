@@ -26,8 +26,8 @@ public class Company implements Runnable {
     private ArrayList<Route> rotasExecutadas;
 
     private Instant timestamp;
-    private JsonManager jsonMaker = new JsonManager();
-    private Cryptographer encriptador = new Cryptographer();
+    private MessagesJson messagesJson = new MessagesJson();
+    private JSONCryptoUtil jsonCryptoUtil = new JSONCryptoUtil();
     private JSONObject json = new JSONObject();
     private SharedMemory memoriaCompartilhada = new SharedMemory();
     private BotPayment botDePagamentos;

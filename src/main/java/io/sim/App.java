@@ -17,11 +17,10 @@ public class App {
         
 
         // Inicialização das threads
-        // Lembrando que devo inciar com start() e não com run()
-        // DIferença entre start() e run() é que start() inicia uma nova thread e run() não
-        fuelStation.start();        
+        // Lembrando que tem que ser por run() porque se trata de runnable
+        fuelStation.run();        
         company.run();        
-        alphaBank.start();
+        alphaBank.run();
        
        
     }

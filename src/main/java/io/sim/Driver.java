@@ -1,62 +1,207 @@
-package io.sim;
+package io.sim;paymentJsonManager
 
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.List;
 
-public class Driver extends Thread {
-    private List<Route> routesToExecute;
-    private AlphaBank alphaBank;
-    private Company company;
-    private double totalDistance; // Variável para acompanhar a distância total percorrida
-    private Car car; // Adicione uma instância da classe Car
+import org.json.JSONObject;
 
-    public Driver(AlphaBank alphaBank, Company company) {
-        this.routesToExecute = new ArrayList<>();
-        this.alphaBank = alphaBank;
-        this.company = company;
-        this.totalDistance = 0.0; // Inicialize a distância total como zero
+public class Driver implements Runnable {
+
+    private boolean isAlive = false;
+
+    private ArrayList<Route> rotasAseremExecutadas;
+    private ArrayList<Route> rotasEmExecucao;
+    private ArrayList<Route> rotasExecutadas;
+    private boolean rotasSendoExecutada;
+    private int indexRotas;
+
+    private JsonManager jsonMaker = new JsonManager();
+    private Cryptographer encriptador = new Cryptographer();
+    private SharedMemory memoriaCompartilhada = new SharedMemory();
+    private JSONObject json = new JSONObject();
+    private Instant timestamp;
+    private Long timestampDriver;
+    private AlphaBank banco = new AlphaBank();
+
+    private BotPayment bot;
+
+    private String idDriver;
+    private Car carro;
+    private String cadastroDriver;
+    private float kmRodado;
+    private FuelSatation posto;
+
+    // Dados da conta alphabank
+    private String idConta;
+    private double valorInicialDaConta;
+    private double saldo;
+
+    private EnvSimulator simulador;
+
+    public Driver(String cadastroDriver, EnvSimulator simulador) {
+        this.isAlive = true;
+        this.idConta = cadastroDriver;
+        this.idDriver = cadastroDriver;
+        this.valorInicialDaConta = 0;
+        this.saldo = 0;
+        this.kmRodado = 0;
+        this.rotasSendoExecutada = false; // Inicia sem fazer nenhuma rota
+        this.simulador = simulador; // Objeto que referencia o objeto se simulação do sumo
+        this.indexRotas = 0;
+
+        bot = new BotPayment(idConta);
+        posto = new FuelSatation();
+        carro = new Car(this.cadastroDriver, simulador.getSumoObj());
+
+        criarConta();
+        solicitarRotas();
+
+        run();
     }
 
-    public synchronized void addRoute(Route route) {
-        this.routesToExecute.add(route);
+    private void solicitarRotas() {
+        timestamp = Instant.now();
+        long timestampNanos = timestamp.getNano() + timestamp.getEpochSecond() * 1_000_000_000L;
+        json = jsonMaker.JsonSolicitaRota(encriptador.criptografarString(idConta),
+                encriptador.criptografarTimestamp(timestampNanos));
+        memoriaCompartilhada.write(json, "2");
     }
 
-    private Route getNextRoute() {
-        if (!routesToExecute.isEmpty()) {
-            return routesToExecute.remove(0);
-        }
-        return null;
-    }
-
-    private double executeRoute(Route route) {
-        // Lógica para executar a rota com o carro e obter a distância
-        double distance = 0.0; // Substitua isso pela lógica real
-        return distance;
-    }
-
-    public void setCar(Car car) {
-        this.car = car;
-    }
-
-    @Override
     public void run() {
-        while (true) {
-            Route currentRoute = getNextRoute();
-            if (currentRoute == null) {
-                break; // Sai do loop se não houver mais rotas
-            }
-
-            System.out.println("Driver: Iniciando rota " + currentRoute);
-            double distance = executeRoute(currentRoute);
-            System.out.println("Driver: Rota concluída. Distância percorrida: " + distance + " km");
-            totalDistance += distance; // Atualize a distância total
-            company.finishRoute(currentRoute, distance);
+        while (rotasAseremExecutadas.size() == 0) {
         }
-
-        System.out.println("Driver: Todas as rotas foram concluídas.");
+        while (isAlive) {
+            try {
+                System.out.println("Driver");
+                // funções a serem processadas
+                if (carro.getAbastecer()) {
+                    abastecer();
+                }
+                verificaCorrida();
+                Thread.sleep(500);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            // throw new UnsupportedOperationException("Unimplemented method 'run'"); -> diz
+            // q o run n foi implementado
+        }
     }
 
-    public double getDistance() {
-        return totalDistance; // Obtenha a distância total percorrida pelo motorista
+    private void verificaCorrida() {
+
+    }
+
+    private void abastecer() {
+        // Parar o carro
+        double preco = 0;
+        this.saldo = getSaldo();
+        if (saldo > 5.87) {
+            preco = posto.abastecer(saldo, carro.getFuelTank(), carro);
+            if (preco > 0) { // Abasteceu e temos valor
+                bot.setPagarPosto(true, preco);
+                preco = 0;
+            }
+            if (!rotasSendoExecutada) {
+                // Inicia uma nova rota
+                Route nextRota = rotasAseremExecutadas.get(indexRotas);
+                rotasEmExecucao.add(indexRotas, nextRota);
+                rotasAseremExecutadas.remove(nextRota);
+                iniciaRota();
+            }
+            // if (){
+            // // Adicionar verificação de fim de rota
+            // }
+        } else {
+            System.out.println("Carro_" + cadastroDriver + ": Sem saldo suficiente, ainda e necessario abastecer");
+        }
+
+        // Liberar o carro
+    }
+
+    private void iniciaRota() {
+
+    }
+
+    private void criarConta() {
+        timestamp = Instant.now();
+        long timestampNanos = timestamp.getNano() + timestamp.getEpochSecond() * 1_000_000_000L;
+        json = jsonMaker.JsonCriarConta(encriptador.criptografarString(idConta),
+                encriptador.criptografarDouble(valorInicialDaConta), encriptador.criptografarTimestamp(timestampNanos));
+        memoriaCompartilhada.write(json, "CriarConta");
+    }
+
+    private double getSaldo() {
+        double saldoNovo = banco.getSaldo(idConta);
+        return saldoNovo;
+    }
+
+    public void setRoute(ArrayList<Route> rotas) {
+        this.rotasAseremExecutadas = rotas;
+    }
+
+    public String getId() {
+        return this.idDriver;
+    }
+
+    public Car getCarro() {
+        return this.carro;
+    }
+
+    class BotPayment {
+
+        private boolean isAlive = false;
+        private Instant timestamp;
+        private JsonManager jsonMaker = new JsonManager();
+        private Cryptographer encriptador = new Cryptographer();
+        private JSONObject json = new JSONObject();
+        private SharedMemory memoriaCompartilhada = new SharedMemory();
+        private float kmPago;
+        private float kmRodado;
+        private boolean pagarPosto;
+        // public static float kmAtual = 0;;
+
+        private String idConta;
+        private double valorAPagar;
+
+        public BotPayment(String idConta) {
+            this.isAlive = true;
+            this.idConta = idConta;
+            this.pagarPosto = false;
+            run();
+        }
+
+        public void run() {
+            // Processos iniciais...
+            while (isAlive) {
+                try {
+                    // System.out.println("Thread botpayment");
+                    // adicionar verificação de km percorrido
+                    if (pagarPosto) {
+                        pay();
+                        kmPago = kmRodado;
+                    }
+
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+            }
+        }
+
+        public void setPagarPosto(boolean pagarPosto, double quantia) {
+            this.pagarPosto = pagarPosto;
+            this.valorAPagar = quantia;
+        }
+
+        public void pay() {
+            timestamp = Instant.now();
+            long timestampNanos = timestamp.getNano() + timestamp.getEpochSecond() * 1_000_000_000L;
+            json = jsonMaker.JsonTransferencia("4", encriptador.criptografarString(idConta),
+                    encriptador.criptografarString("Fuel_Station"), encriptador.criptografarDouble(valorAPagar),
+                    encriptador.criptografarTimestamp(timestampNanos));
+            memoriaCompartilhada.write(json, "6");
+            pagarPosto = false;
+            valorAPagar = 0;
+        }
     }
 }

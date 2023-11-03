@@ -16,16 +16,18 @@ public class Auto extends Thread {
 
 	private boolean on_off;
 	private long acquisitionRate;
-	private int fuelType; 			// 1-diesel, 2-gasoline, 3-ethanol, 4-hybrid
-	private int fuelPreferential; 	// 1-diesel, 2-gasoline, 3-ethanol, 4-hybrid
-	private double fuelPrice; 		// price in liters
-	private int personCapacity;		// the total number of persons that can ride in this vehicle
-	private int personNumber;		// the total number of persons which are riding in this vehicle
+	private int fuelType; // 1-diesel, 2-gasoline, 3-ethanol, 4-hybrid
+	private int fuelPreferential; // 1-diesel, 2-gasoline, 3-ethanol, 4-hybrid
+	private double fuelPrice; // price in liters
+	private int personCapacity; // the total number of persons that can ride in this vehicle
+	private int personNumber; // the total number of persons which are riding in this vehicle
 
 	private ArrayList<DrivingData> drivingRepport;
-	
-	public Auto(boolean _on_off, String _idAuto, SumoColor _colorAuto, String _driverID, SumoTraciConnection _sumo, long _acquisitionRate,
-			int _fuelType, int _fuelPreferential, double _fuelPrice, int _personCapacity, int _personNumber) throws Exception {
+
+	public Auto(boolean _on_off, String _idAuto, SumoColor _colorAuto, String _driverID, SumoTraciConnection _sumo,
+			long _acquisitionRate,
+			int _fuelType, int _fuelPreferential, double _fuelPrice, int _personCapacity, int _personNumber)
+			throws Exception {
 
 		this.on_off = _on_off;
 		this.idAuto = _idAuto;
@@ -33,14 +35,14 @@ public class Auto extends Thread {
 		this.driverID = _driverID;
 		this.sumo = _sumo;
 		this.acquisitionRate = _acquisitionRate;
-		
-		if((_fuelType < 0) || (_fuelType > 4)) {
+
+		if ((_fuelType < 0) || (_fuelType > 4)) {
 			this.fuelType = 4;
 		} else {
 			this.fuelType = _fuelType;
 		}
-		
-		if((_fuelPreferential < 0) || (_fuelPreferential > 4)) {
+
+		if ((_fuelPreferential < 0) || (_fuelPreferential > 4)) {
 			this.fuelPreferential = 4;
 		} else {
 			this.fuelPreferential = _fuelPreferential;
@@ -56,7 +58,7 @@ public class Auto extends Thread {
 	public void run() {
 		while (this.on_off) {
 			try {
-				//Auto.sleep(this.acquisitionRate);
+				// Auto.sleep(this.acquisitionRate);
 				this.atualizaSensores();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -76,7 +78,7 @@ public class Auto extends Thread {
 				System.out.println("RoadID: " + (String) this.sumo.do_job_get(Vehicle.getRoadID(this.idAuto)));
 				System.out.println("RouteID: " + (String) this.sumo.do_job_get(Vehicle.getRouteID(this.idAuto)));
 				System.out.println("RouteIndex: " + this.sumo.do_job_get(Vehicle.getRouteIndex(this.idAuto)));
-				
+
 				DrivingData _repport = new DrivingData(
 
 						this.idAuto, this.driverID, System.currentTimeMillis(), sumoPosition2D.x, sumoPosition2D.y,
@@ -89,8 +91,8 @@ public class Auto extends Thread {
 						// Vehicle's fuel consumption in ml/s during this time step,
 						// to get the value for one step multiply with the step length; error value:
 						// -2^30
-						
-						1/*averageFuelConsumption (calcular)*/,
+
+						1/* averageFuelConsumption (calcular) */,
 
 						this.fuelType, this.fuelPrice,
 
@@ -103,12 +105,12 @@ public class Auto extends Thread {
 						// Vehicle's HC emissions in mg/s during this time step,
 						// to get the value for one step multiply with the step length; error value:
 						// -2^30
-						
+
 						this.personCapacity,
 						// the total number of persons that can ride in this vehicle
-						
+
 						this.personNumber
-						// the total number of persons which are riding in this vehicle
+				// the total number of persons which are riding in this vehicle
 
 				);
 
@@ -118,53 +120,65 @@ public class Auto extends Thread {
 
 				this.drivingRepport.add(_repport);
 
-				//System.out.println("Data: " + this.drivingRepport.size());
+				// System.out.println("Data: " + this.drivingRepport.size());
 				System.out.println("idAuto = " + this.drivingRepport.get(this.drivingRepport.size() - 1).getAutoID());
-				//System.out.println(
-				//		"timestamp = " + this.drivingRepport.get(this.drivingRepport.size() - 1).getTimeStamp());
-				//System.out.println("X=" + this.drivingRepport.get(this.drivingRepport.size() - 1).getX_Position() + ", "
-				//		+ "Y=" + this.drivingRepport.get(this.drivingRepport.size() - 1).getY_Position());
+				// System.out.println(
+				// "timestamp = " + this.drivingRepport.get(this.drivingRepport.size() -
+				// 1).getTimeStamp());
+				// System.out.println("X=" + this.drivingRepport.get(this.drivingRepport.size()
+				// - 1).getX_Position() + ", "
+				// + "Y=" + this.drivingRepport.get(this.drivingRepport.size() -
+				// 1).getY_Position());
 				System.out.println("speed = " + this.drivingRepport.get(this.drivingRepport.size() - 1).getSpeed());
-				System.out.println("odometer = " + this.drivingRepport.get(this.drivingRepport.size() - 1).getOdometer());
+				System.out
+						.println("odometer = " + this.drivingRepport.get(this.drivingRepport.size() - 1).getOdometer());
 				System.out.println("Fuel Consumption = "
 						+ this.drivingRepport.get(this.drivingRepport.size() - 1).getFuelConsumption());
-				//System.out.println("Fuel Type = " + this.fuelType);
-				//System.out.println("Fuel Price = " + this.fuelPrice);
+				// System.out.println("Fuel Type = " + this.fuelType);
+				// System.out.println("Fuel Price = " + this.fuelPrice);
 
 				System.out.println(
 						"CO2 Emission = " + this.drivingRepport.get(this.drivingRepport.size() - 1).getCo2Emission());
 
-				//System.out.println();
-				//System.out.println("************************");
-				//System.out.println("testes: ");
-				//System.out.println("getAngle = " + (double) sumo.do_job_get(Vehicle.getAngle(this.idAuto)));
-				//System.out
-				//		.println("getAllowedSpeed = " + (double) sumo.do_job_get(Vehicle.getAllowedSpeed(this.idAuto)));
-				//System.out.println("getSpeed = " + (double) sumo.do_job_get(Vehicle.getSpeed(this.idAuto)));
-				//System.out.println(
-				//		"getSpeedDeviation = " + (double) sumo.do_job_get(Vehicle.getSpeedDeviation(this.idAuto)));
-				//System.out.println("getMaxSpeedLat = " + (double) sumo.do_job_get(Vehicle.getMaxSpeedLat(this.idAuto)));
-				//System.out.println("getSlope = " + (double) sumo.do_job_get(Vehicle.getSlope(this.idAuto))
-				//		+ " the slope at the current position of the vehicle in degrees");
-				//System.out.println(
-				//		"getSpeedWithoutTraCI = " + (double) sumo.do_job_get(Vehicle.getSpeedWithoutTraCI(this.idAuto))
-				//				+ " Returns the speed that the vehicle would drive if no speed-influencing\r\n"
-				//				+ "command such as setSpeed or slowDown was given.");
+				// System.out.println();
+				// System.out.println("************************");
+				// System.out.println("testes: ");
+				// System.out.println("getAngle = " + (double)
+				// sumo.do_job_get(Vehicle.getAngle(this.idAuto)));
+				// System.out
+				// .println("getAllowedSpeed = " + (double)
+				// sumo.do_job_get(Vehicle.getAllowedSpeed(this.idAuto)));
+				// System.out.println("getSpeed = " + (double)
+				// sumo.do_job_get(Vehicle.getSpeed(this.idAuto)));
+				// System.out.println(
+				// "getSpeedDeviation = " + (double)
+				// sumo.do_job_get(Vehicle.getSpeedDeviation(this.idAuto)));
+				// System.out.println("getMaxSpeedLat = " + (double)
+				// sumo.do_job_get(Vehicle.getMaxSpeedLat(this.idAuto)));
+				// System.out.println("getSlope = " + (double)
+				// sumo.do_job_get(Vehicle.getSlope(this.idAuto))
+				// + " the slope at the current position of the vehicle in degrees");
+				// System.out.println(
+				// "getSpeedWithoutTraCI = " + (double)
+				// sumo.do_job_get(Vehicle.getSpeedWithoutTraCI(this.idAuto))
+				// + " Returns the speed that the vehicle would drive if no
+				// speed-influencing\r\n"
+				// + "command such as setSpeed or slowDown was given.");
 
-				//sumo.do_job_set(Vehicle.setSpeed(this.idAuto, (1000 / 3.6)));
-				//double auxspeed = (double) sumo.do_job_get(Vehicle.getSpeed(this.idAuto));
-				//System.out.println("new speed = " + (auxspeed * 3.6));
-				//System.out.println(
-				//		"getSpeedDeviation = " + (double) sumo.do_job_get(Vehicle.getSpeedDeviation(this.idAuto)));
-				
-				
+				// sumo.do_job_set(Vehicle.setSpeed(this.idAuto, (1000 / 3.6)));
+				// double auxspeed = (double) sumo.do_job_get(Vehicle.getSpeed(this.idAuto));
+				// System.out.println("new speed = " + (auxspeed * 3.6));
+				// System.out.println(
+				// "getSpeedDeviation = " + (double)
+				// sumo.do_job_get(Vehicle.getSpeedDeviation(this.idAuto)));
+
 				sumo.do_job_set(Vehicle.setSpeedMode(this.idAuto, 0));
 				sumo.do_job_set(Vehicle.setSpeed(this.idAuto, 6.95));
 
-				
 				System.out.println("getPersonNumber = " + sumo.do_job_get(Vehicle.getPersonNumber(this.idAuto)));
-				//System.out.println("getPersonIDList = " + sumo.do_job_get(Vehicle.getPersonIDList(this.idAuto)));
-				
+				// System.out.println("getPersonIDList = " +
+				// sumo.do_job_get(Vehicle.getPersonIDList(this.idAuto)));
+
 				System.out.println("************************");
 
 			} else {
@@ -204,7 +218,7 @@ public class Auto extends Thread {
 	}
 
 	public void setFuelType(int _fuelType) {
-		if((_fuelType < 0) || (_fuelType > 4)) {
+		if ((_fuelType < 0) || (_fuelType > 4)) {
 			this.fuelType = 4;
 		} else {
 			this.fuelType = _fuelType;
@@ -228,7 +242,7 @@ public class Auto extends Thread {
 	}
 
 	public void setFuelPreferential(int _fuelPreferential) {
-		if((_fuelPreferential < 0) || (_fuelPreferential > 4)) {
+		if ((_fuelPreferential < 0) || (_fuelPreferential > 4)) {
 			this.fuelPreferential = 4;
 		} else {
 			this.fuelPreferential = _fuelPreferential;
