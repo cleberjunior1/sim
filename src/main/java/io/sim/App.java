@@ -1,5 +1,12 @@
 package io.sim;
 
+import java.net.ServerSocket;
+import java.util.ArrayList;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
 /**
  * A classe App é o método main que inicializa as classes principais do projeto.
  */
@@ -24,10 +31,36 @@ public class App {
        // Comentar sobre a utilização do método join aqui
        // O método join() faz com que a thread que o chamou espere a thread que ele chamou terminar de executar
        // Isso é necessário para que o programa não termine antes das threads terminarem de executar
-       // 
-       
-    }
-}
+       // O método join existe somente para threads, não para runnable
+/*
+        try{
+        //Cria os objetos necessário para instânciar o servidor
+        
+        JLabel lblMessage = new JLabel("Porta do Servidor:");
+        JTextField txtPorta = new JTextField("12345");
+        Object[] texts = {lblMessage, txtPorta };
+        JOptionPane.showMessageDialog(null, texts);
+        server = new ServerSocket(Integer.parseInt(txtPorta.getText()));
+        clientes = new ArrayList<BufferedWriter>();
+        JOptionPane.showMessageDialog(null,"Servidor ativo na porta: "+
+        txtPorta.getText());
+
+            while(true){
+            System.out.println("Aguardando conexão...");
+            Socket con = server.accept();
+            System.out.println("Cliente conectado...");
+            Thread t = new Servidor(con);
+                t.start();
+            }
+
+        }catch (Exception e) {
+
+            e.printStackTrace();
+        }
+        */
+ }// Fim do método main
+}// Fim da classe App
+
 
 /*Thread fuelStationThread = new Thread(fuelStation);
 Thread companyThread = new Thread(company);
