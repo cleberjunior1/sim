@@ -1,7 +1,7 @@
 package io.sim;
 
-import java.net.ServerSocket;
-import java.util.ArrayList;
+import java.net.ServerSocket; // classe que representa o servidor. Futura implementação
+import java.util.ArrayList; 
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,7 +28,7 @@ public class App {
         Thread alphaBankThread = new Thread(alphaBank);
 
         envThread.start(); // inicia as threads
-        fuelStationThread.start(); 
+        fuelStationThread.start();  // Ao iniciar as threads, o método run() de cada classe é executado
         companyThread.start();
         alphaBankThread.start();
 
@@ -44,13 +44,11 @@ public class App {
 
         // Inicialização das threads
         // Lembrando que tem que ser por run() porque se trata de runnable
-        fuelStation.run();        
-        company.run();        
-        alphaBank.run();
+
        // Comentar sobre a utilização do método join aqui
        // O método join() faz com que a thread que o chamou espere a thread que ele chamou terminar de executar
        // Isso é necessário para que o programa não termine antes das threads terminarem de executar
-       // O método join existe somente para threads, não para runnable
+
 /*
         try{
         //Cria os objetos necessário para instânciar o servidor
