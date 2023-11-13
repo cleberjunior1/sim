@@ -17,16 +17,12 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 public class Company implements Runnable {
-    // Deve ser uma thread
-    // deve conter um conjunto de rotas -> FEITO
-    // Deve ser um servidor para carros
-    // Deve ser um cliente de alphaBank -> deve ter uma conta no alphaBank
-    // Criar uma Classe BotPayment (Thread)
-    // gerar xlsl de relatório (xlsl é sugestão minha)
 
     private boolean isAlive = false;
 
     private double precoPkm;
+
+    // Variáveis responsaveis pelas rotas, a serem executadas, em execução e já executadas
     private ArrayList<Route> rotasAseremExecutadas;
     private ArrayList<Route> rotasEmExecucao;
     private ArrayList<Route> rotasExecutadas;
@@ -54,6 +50,7 @@ public class Company implements Runnable {
 
     // private String idItinerario;
 
+    // Contrutor da classe Company
     public Company(EnvSimulator ev) {
         this.isAlive = true;
         this.precoPkm = 3.25;
@@ -121,19 +118,17 @@ public class Company implements Runnable {
                 this.rotasAseremExecutadas.add(new Route(Integer.toString(i)));
             }
         } catch (SAXException | IOException | DOMException e) {
-            e.printStackTrace(); // ou tratamento adequado
+            e.printStackTrace();
         } catch (ParserConfigurationException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
     public void run() {
-        // Processos iniciais...
-        System.out.println("Company");
+        System.out.println("Run na classe Company");
         while (isAlive) {
             try {
-                // System.out.println("Thread Company");
+                
                 verificarSolicitacoes();
                 if (solicitacoesRotas.size() > 0) {
                     for (int i = 0; i < solicitacoesRotas.size(); i++) {
@@ -147,7 +142,8 @@ public class Company implements Runnable {
                 }
                 Thread.sleep(1000);
             } catch (Exception e) {
-                // TODO: handle exception
+                System.out.println("Erro na thread Company");
+                
             }
         }
     }

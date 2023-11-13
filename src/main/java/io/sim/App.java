@@ -28,3 +28,19 @@ public class App {
        
     }
 }
+
+/*Thread fuelStationThread = new Thread(fuelStation);
+Thread companyThread = new Thread(company);
+Thread alphaBankThread = new Thread(alphaBank);
+
+fuelStationThread.start();
+companyThread.start();
+alphaBankThread.start();
+
+try {
+    fuelStationThread.join();
+    companyThread.join();
+    alphaBankThread.join();
+} catch (InterruptedException e) {
+    e.printStackTrace();
+} */

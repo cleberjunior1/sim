@@ -11,6 +11,7 @@ c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\test\java\it\polito\appeal\traci\test\protocol\MessageTest.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\src\java\it\polito\appeal\traci\Lane.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\src\java\it\polito\appeal\traci\TLState.java
+c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\io\sim\Cryptographer.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\src\java\it\polito\appeal\traci\MeMeDetector.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\io\sim\FuelStation.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\src\java\it\polito\appeal\traci\Program.java
@@ -48,7 +49,6 @@ c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\src\java\it\polito\appeal\traci\ObjectFactory.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\src\java\it\polito\appeal\traci\Repository.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\io\sim\Company.java
-c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\io\sim\MessagesJson.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\src\java\it\polito\appeal\traci\ChangeDecelQuery.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\src\java\it\polito\appeal\traci\LaneListQuery.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\src\java\it\polito\appeal\traci\protocol\RoadmapPosition.java
@@ -100,7 +100,6 @@ c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\src\java\it\polito\appeal\traci\ChangeMaxSpeedQuery.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\src\java\it\polito\appeal\traci\LightState.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\test\java\it\polito\appeal\traci\test\TraCIServerTest.java
-c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\io\sim\JSONCryptoUtil.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\src\java\it\polito\appeal\traci\RerouteQuery.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\src\java\it\polito\appeal\traci\ChangeCompleteProgramQuery.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\src\java\it\polito\appeal\traci\protocol\Polygon.java
@@ -108,6 +107,7 @@ c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\io\sim\EnvSimulator.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\test\java\it\polito\appeal\traci\test\TraCITest.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\src\java\it\polito\appeal\traci\protocol\WriteableToStorage.java
+c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\io\sim\JsonManager.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\test\java\it\polito\appeal\traci\test\PositionConvertionTest.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\sim\traci4j\examples\it\polito\appeal\traci\examples\OpenStepsClose.java
 c:\Users\clebe\OneDrive\Documentos\UFLA_Periodo_10\Automation\sim\src\main\java\io\sim\Route.java
