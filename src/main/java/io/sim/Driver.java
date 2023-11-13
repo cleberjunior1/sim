@@ -29,7 +29,7 @@ public class Driver implements Runnable {
     private Car carro;
     private String cadastroDriver;
     private float kmRodado;
-    private FuelSatation posto;
+    private FuelStation posto;
 
     // Dados da conta alphabank
     private String idConta;
@@ -50,7 +50,7 @@ public class Driver implements Runnable {
         this.indexRotas = 0;
 
         bot = new BotPayment(idConta);
-        posto = new FuelSatation();
+        posto = new FuelStation();
         carro = new Car(this.cadastroDriver, simulador.getSumoObj());
 
         criarConta();
