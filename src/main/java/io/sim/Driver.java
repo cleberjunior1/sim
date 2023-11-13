@@ -1,4 +1,4 @@
-package io.sim;paymentJsonManager
+package io.sim;
 
 import java.time.Instant;
 import java.util.ArrayList;

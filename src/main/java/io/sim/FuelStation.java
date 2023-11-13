@@ -17,7 +17,7 @@ public class FuelStation {
     private String idConta;
     private double valorInicialDaConta;
 
-    public FuelSatation() {
+    public FuelStation() {
         this.isAlive = true;
         this.idConta = ("Fuel_Station");
         this.valorInicialDaConta = 0;

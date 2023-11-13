@@ -3,11 +3,11 @@ package io.sim;
 import java.util.ArrayList;
 import org.json.JSONObject;
 
-public class MessagesJson {
+public class JsonManager {
 
     private JSONObject obj = new JSONObject();
 
-    public MessagesJson() {
+    public JsonManager() {
     } // Construtor padrão
 
     public JSONObject JsonTransferencia(String tipoJson, String idPagador, String idRecebedor, String quantia,

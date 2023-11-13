@@ -2,7 +2,7 @@ package io.sim;
 
 import org.jasypt.util.text.BasicTextEncryptor;
 
-public class JSONCryptoUtil {
+public class Cryptographer {
     // Classe para criptografar e desencriptografar dados de mensagens trocadas
     // entre as classes
     private String cifra = "chave_secreta";

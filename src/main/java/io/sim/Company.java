@@ -17,6 +17,12 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 public class Company implements Runnable {
+    // Deve ser uma thread
+    // deve conter um conjunto de rotas -> FEITO
+    // Deve ser um servidor para carros
+    // Deve ser um cliente de alphaBank -> deve ter uma conta no alphaBank
+    // Criar uma Classe BotPayment (Thread)
+    // gerar xlsl de relatório (xlsl é sugestão minha)
 
     private boolean isAlive = false;
 
@@ -26,8 +32,8 @@ public class Company implements Runnable {
     private ArrayList<Route> rotasExecutadas;
 
     private Instant timestamp;
-    private MessagesJson messagesJson = new MessagesJson();
-    private JSONCryptoUtil jsonCryptoUtil = new JSONCryptoUtil();
+    private JsonManager jsonMaker = new JsonManager();
+    private Cryptographer encriptador = new Cryptographer();
     private JSONObject json = new JSONObject();
     private SharedMemory memoriaCompartilhada = new SharedMemory();
     private BotPayment botDePagamentos;

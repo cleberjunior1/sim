@@ -15,12 +15,12 @@ public class AlphaBank implements Runnable {
     private boolean isAlive = false;
 
     private ArrayList<Account> contas;
-    private JSONCryptoUtil tradutor;
+    private Cryptographer tradutor;
     private Instant ultimaLeitura;
     private Map<String, String> map = new HashMap<>();
 
-    private MessagesJson jsonMaker = new MessagesJson();
-    private JSONCryptoUtil encriptador = new JSONCryptoUtil();
+    private JsonManager jsonMaker = new JsonManager();
+    private Cryptographer encriptador = new Cryptographer();
     private SharedMemory memoriaCompartilhada = new SharedMemory();
     private Long timestampCriarConta;
     private Instant tempo;
@@ -28,7 +28,7 @@ public class AlphaBank implements Runnable {
     public AlphaBank() {
         this.isAlive = true;
         this.contas = new ArrayList<Account>();
-        this.tradutor = new JSONCryptoUtil();
+        this.tradutor = new Cryptographer();
         this.tempo = Instant.now();
         timestampCriarConta = (long) 0;
 
