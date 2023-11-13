@@ -88,10 +88,11 @@ public class Company implements Runnable {
         int acumulador = 0, indexDriver = 0; // Acumulador para controlar o número de rotas por piloto e indexador para
                                              // controlar o motorista
         ArrayList<Route> edges = new ArrayList<Route>();
-        for (int i = 0; i < rotasAseremExecutadas.size(); i++) {
+        for (int i = 0; i < rotasAseremExecutadas.size(); i++) { // Percorre a lista de rotas a serem executadas
             if (acumulador < nRotasPorPiloto) {
                 edges.add(rotasAseremExecutadas.get(i));
-            } else if (acumulador == (nRotasPorPiloto - 1)) {
+            } else if (acumulador == (nRotasPorPiloto - 1)) { // Verifica se o acumulador é igual ao número de rotas
+                                                              // por piloto
                 // Atribui
                 Driver motoristaAtual = motoristas.get(indexDriver);
                 motoristaAtual.setRoute(edges);

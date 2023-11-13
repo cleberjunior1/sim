@@ -60,15 +60,21 @@ public class Driver implements Runnable {
     }
 
     private void solicitarRotas() {
-        timestamp = Instant.now();
+        timestamp = Instant.now(); // 
         long timestampNanos = timestamp.getNano() + timestamp.getEpochSecond() * 1_000_000_000L;
         json = jsonMaker.JsonSolicitaRota(encriptador.criptografarString(idConta),
                 encriptador.criptografarTimestamp(timestampNanos));
         memoriaCompartilhada.write(json, "2");
     }
 
-    public void run() {
+    public void run() { // método que executa a thread
         while (rotasAseremExecutadas.size() == 0) {
+            try {
+                System.out.println("Driver: " + cadastroDriver + " aguardando rotas");
+                Thread.sleep(500);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
         while (isAlive) {
             try {
@@ -82,8 +88,7 @@ public class Driver implements Runnable {
             } catch (Exception e) {
                 System.out.println(e);
             }
-            // throw new UnsupportedOperationException("Unimplemented method 'run'"); -> diz
-            // q o run n foi implementado
+ 
         }
     }
 
@@ -171,19 +176,18 @@ public class Driver implements Runnable {
         }
 
         public void run() {
-            // Processos iniciais...
+            // kmAtual = carro.getKmAtual();
             while (isAlive) {
-                try {
-                    // System.out.println("Thread botpayment");
-                    // adicionar verificação de km percorrido
-                    if (pagarPosto) {
+                try {                   
+                    
+                    if (pagarPosto) { // Se for para pagar o posto
                         pay();
                         kmPago = kmRodado;
                     }
 
                     Thread.sleep(1000);
                 } catch (Exception e) {
-                    // TODO: handle exception
+                    System.out.println(e);
                 }
             }
         }

@@ -32,7 +32,7 @@ public class SharedMemory {
         }
     }
 
-    public JSONArray read() {
+    public JSONArray read() { // retorna o json
         JSONArray jsonArray = new JSONArray();
         String filePath = "src\\main\\java\\io\\sim\\jsons\\";
 
@@ -55,11 +55,11 @@ public class SharedMemory {
         return jsonArray;
     }
 
-    private void saveFile(JSONObject value, String nomeArquivo) {
+    private void saveFile(JSONObject value, String nomeArquivo) { // salva o arquivo
         try (FileWriter file = new FileWriter("src\\main\\java\\io\\sim\\jsons\\" + nomeArquivo + ".json")) {
             file.write(value.toString());
-            // System.out.println("Successfully Copied JSON Object to File...");
-            // System.out.println("\nJSON Object: " + value);
+            file.flush(); // limpa o buffer
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,13 +1,11 @@
 package io.sim;
 
 public class Route {
-    // adicionar construtor V
-    // adicionar destrutor
-    // adicionar atributos privados de rotas -> edges
-    private Itinerary itinerario;
+
+    private Itinerary itinerario; // itinerário da rota
 
     public Route(String idRota) {
-        this.itinerario = new Itinerary("data/dados2.xml", idRota);
+        this.itinerario = new Itinerary("data/dados2.xml", idRota); // cria o itinerário
     }
 
     public String getIdRota() {

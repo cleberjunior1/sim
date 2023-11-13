@@ -10,16 +10,21 @@ import org.json.JSONObject;
 
 import com.google.gson.JsonArray;
 
-public class AlphaBank implements Runnable {
+/**
+ * The AlphaBank class represents a bank that implements the Runnable interface, allowing it to be executed in a thread.
+ * It manages a list of accounts, a JSON translator, and a map of accounts and balances. It also has methods for creating accounts, transferring funds between accounts, and retrieving account balances.
+ */
+public class AlphaBank implements Runnable { // Runnable é uma interface que permite que a classe seja executada em uma
+                                             // thread
 
     private boolean isAlive = false;
 
-    private ArrayList<Account> contas;
-    private Cryptographer tradutor;
-    private Instant ultimaLeitura;
-    private Map<String, String> map = new HashMap<>();
+    private ArrayList<Account> contas; // Lista de contas
+    private Cryptographer tradutor; // Tradutor de JSON
+    private Instant ultimaLeitura; // Instante da última leitura do arquivo
+    private Map<String, String> map = new HashMap<>(); // Mapa de contas e saldo
 
-    private JsonManager jsonMaker = new JsonManager();
+    private JsonManager jsonMaker = new JsonManager(); 
     private Cryptographer encriptador = new Cryptographer();
     private SharedMemory memoriaCompartilhada = new SharedMemory();
     private Long timestampCriarConta;
@@ -85,7 +90,7 @@ public class AlphaBank implements Runnable {
         return contas.get(index).getSaldo();
     }
 
-    private int findAccountById(String id) { // ADICIONAR EXCEPTION
+    private int findAccountById(String id) { //
         boolean existe = false;
         int i;
         for (i = 0; i < contas.size(); i++) {
@@ -107,11 +112,12 @@ public class AlphaBank implements Runnable {
         }
     }
 
-    private void separadorDeJsons(JSONObject arquivo) {
+    private void separadorDeJsons(JSONObject arquivo) { // separa os jsons de acordo com o tipo de requisição
         switch (arquivo.get("tipo_de_requisicao").toString()) {
             // Case de criar conta
             case "CriarConta":
-                Long tempoAux = verificaTempo(arquivo, timestampCriarConta);
+                Long tempoAux = verificaTempo(arquivo, timestampCriarConta); // verifica se o tempo do arquivo é maior
+                                                                             // que o tempo da ultima leitura
                 if (tempoAux > timestampCriarConta) {
                     timestampCriarConta = tempoAux;
                     criarConta(arquivo);
@@ -121,9 +127,10 @@ public class AlphaBank implements Runnable {
 
     }
 
-    private Long verificaTempo(JSONObject arquivo, Long timestamp) {
+    private Long verificaTempo(JSONObject arquivo, Long timestamp) { // verifica se o tempo do arquivo é maior que o
+                                                                     // tempo da ultima leitura
         String timestampAtualStr = arquivo.get("timestamp").toString();
-        Long timestampAtual = encriptador.descriptografarTimestamp(timestampAtualStr);
+        Long timestampAtual = encriptador.descriptografarTimestamp(timestampAtualStr); // descriptografa o timestamp
         if (timestampAtual > timestamp) {
             timestamp = timestampAtual;
             System.out.println("CRIA CONTA");

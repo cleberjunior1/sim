@@ -49,7 +49,7 @@ public class App {
        // O método join() faz com que a thread que o chamou espere a thread que ele chamou terminar de executar
        // Isso é necessário para que o programa não termine antes das threads terminarem de executar
 
-/*
+
         try{
         //Cria os objetos necessário para instânciar o servidor
         
@@ -74,7 +74,7 @@ public class App {
 
             e.printStackTrace();
         }
-        */
+        
  }// Fim do método main
 }
 
