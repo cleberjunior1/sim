@@ -21,7 +21,10 @@ public class App {
         fuelStation.run();        
         company.run();        
         alphaBank.run();
-       
+       // Comentar sobre a utilização do método join aqui
+       // O método join() faz com que a thread que o chamou espere a thread que ele chamou terminar de executar
+       // Isso é necessário para que o programa não termine antes das threads terminarem de executar
+       // 
        
     }
 }
