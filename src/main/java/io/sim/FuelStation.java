@@ -3,7 +3,7 @@ package io.sim;
 import java.time.Instant;
 import org.json.JSONObject;
 
-public class FuelStation {
+public class FuelStation implements Runnable {
 
     private boolean isAlive = false;
     private JsonManager jsonMaker = new JsonManager();

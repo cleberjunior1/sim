@@ -22,6 +22,25 @@ public class App {
         FuelStation fuelStation = new FuelStation(); // representa o posto de combustível
         Company company = new Company(envSimulator); // representa a companhia (mobility company) 
         
+        Thread envThread = new Thread(envSimulator); // cria as threads
+        Thread fuelStationThread = new Thread(fuelStation); 
+        Thread companyThread = new Thread(company);
+        Thread alphaBankThread = new Thread(alphaBank);
+
+        envThread.start(); // inicia as threads
+        fuelStationThread.start(); 
+        companyThread.start();
+        alphaBankThread.start();
+
+
+        try { // espera as threads terminarem de executar
+            envThread.join();
+            fuelStationThread.join();
+            companyThread.join();
+            alphaBankThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } 
 
         // Inicialização das threads
         // Lembrando que tem que ser por run() porque se trata de runnable
@@ -59,21 +78,6 @@ public class App {
         }
         */
  }// Fim do método main
-}// Fim da classe App
+}
 
 
-/*Thread fuelStationThread = new Thread(fuelStation);
-Thread companyThread = new Thread(company);
-Thread alphaBankThread = new Thread(alphaBank);
-
-fuelStationThread.start();
-companyThread.start();
-alphaBankThread.start();
-
-try {
-    fuelStationThread.join();
-    companyThread.join();
-    alphaBankThread.join();
-} catch (InterruptedException e) {
-    e.printStackTrace();
-} */
