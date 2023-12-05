@@ -38,6 +38,7 @@ public class Company implements Runnable {
     private ArrayList<Route> rotasAseremExecutadas;
     private ArrayList<Route> rotasEmExecucao;
     private ArrayList<Route> rotasExecutadas;
+    
 
     private Instant timestamp;
     private JsonManager jsonMaker = new JsonManager();
